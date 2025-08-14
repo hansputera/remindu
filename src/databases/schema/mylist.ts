@@ -1,12 +1,13 @@
-import { pgTable, varchar, text, bigint, timestamp } from "drizzle-orm/pg-core"
+import { pgTable, text, bigint, timestamp, integer } from "drizzle-orm/pg-core"
 import { sql } from 'drizzle-orm';
+import { users } from './user';
 
-export const users = pgTable('users', {
+export const mylist = pgTable('mylist', {
   id: bigint("id", { mode: 'bigint' }).primaryKey().generatedAlwaysAsIdentity(),
-  fullName: varchar("full_name", { length: 255 }),
-  email: text("email").unique().notNull(),
-  password: text("password").notNull(),
-  phone: varchar("phone", { length: 20 }), // for WA notification
+  title: text().notNull(),
+  image: text(),
+  episode: integer().notNull().default(1),
+  userId: bigint("user_id", { mode: 'bigint' }).references(() => users.id).notNull(),
   createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow().notNull(),
   updatedAt: timestamp('updatedAt', { mode: 'date' })
     .default(sql`CURRENT_TIMESTAMP`)
