@@ -1,8 +1,8 @@
 import { pgTable, text, bigint, timestamp, integer } from "drizzle-orm/pg-core"
 import { sql } from 'drizzle-orm';
-import { users } from './user';
+import { users } from './users';
 
-export const mylist = pgTable('mylist', {
+export const mylists = pgTable('mylists', {
   id: bigint("id", { mode: 'bigint' }).primaryKey().generatedAlwaysAsIdentity(),
   title: text().notNull(),
   image: text(),
