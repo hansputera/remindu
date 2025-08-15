@@ -1,6 +1,6 @@
 import swagger from '@elysiajs/swagger';
 import { Elysia } from "elysia";
-import { EnvManager } from './utils/env-manager';
+import { EnvManager } from './utils/EnvManager';
 import AuthController from './controllers/AuthController';
 
 const port: number = EnvManager.getPort();

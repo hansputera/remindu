@@ -1,9 +1,9 @@
 import { Elysia } from "elysia";
 import { jwt } from "@elysiajs/jwt";
 import { UserModel } from "../databases/model/User";
-import { EnvManager } from '../utils/env-manager';
+import { EnvManager } from '../utils/EnvManager';
 
-export const authMiddleware = (app: Elysia) => {
+export const AuthMiddleware = (app: Elysia) => {
     return app.use(
       jwt({
         name: 'jwt',

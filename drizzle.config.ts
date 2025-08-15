@@ -1,5 +1,5 @@
 import { Config, defineConfig } from 'drizzle-kit';
-import { EnvManager } from './src/utils/env-manager';
+import { EnvManager } from './src/utils/EnvManager';
 
 const dialect = (EnvManager.getVar('DB_CONNECTION', true) ?? 'sqlite') as Config['dialect'];
 

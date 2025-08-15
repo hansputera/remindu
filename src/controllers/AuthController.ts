@@ -1,6 +1,6 @@
 import jwt from '@elysiajs/jwt';
 import { Elysia, t } from "elysia";
-import { EnvManager } from '../utils/env-manager';
+import { EnvManager } from '../utils/EnvManager';
 import { UserModel } from '../databases/model/User';
 import { LoginBodyRequest, LoginSuccessResponse, RegisterBodyRequest } from '../types/Auth';
 import { GeneralResponse } from '../types/General';
