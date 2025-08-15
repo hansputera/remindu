@@ -5,7 +5,7 @@ const dialect = (EnvManager.getVar('DB_CONNECTION', true) ?? 'sqlite') as Config
 
 export default defineConfig({
   out: './drizzle',
-  schema: './src/databases/schema',
+  schema: './src/databases/schema.ts',
   dialect,
   dbCredentials: {
     url: EnvManager.getDatabaseUrl(),

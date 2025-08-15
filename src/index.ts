@@ -1,7 +1,9 @@
 import swagger from '@elysiajs/swagger';
 import { Elysia } from "elysia";
+import { EnvManager } from './utils/env-manager';
+import AuthController from './controllers/AuthController';
 
-const port = Bun.env.APP_PORT || 3000;
+const port: number = EnvManager.getPort();
 const app = new Elysia()
   .use(
     swagger({
@@ -30,13 +32,15 @@ const app = new Elysia()
       }
     })
   )
-  .get("/", () => "Hello Elysia")
-  .get("/test", () => {
+  .get("/", () => {
     return {
-      message: "json response",
-      custom_field: "custom value",
-    };
+      message: "Hello Elysia"
+    }
   })
+  .group('/api', (app) => 
+    app
+      .use(AuthController)
+  )
   .listen(port);
 
 console.log(

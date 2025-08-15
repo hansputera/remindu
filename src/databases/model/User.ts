@@ -1,6 +1,6 @@
 import { db } from "../db"; // Your Drizzle DB instance
 import { eq, InferInsertModel, InferSelectModel } from "drizzle-orm";
-import { users } from '../schema/users';
+import { users } from '../schema';
 
 export type User = InferSelectModel<typeof users>;
 export type NewUser = InferInsertModel<typeof users>;
@@ -12,17 +12,17 @@ export class UserModel {
     return inserted;
   }
 
-  static async deleteById(id: bigint): Promise<number> {
+  static async deleteById(id: number): Promise<number> {
     const result = await db.delete(users).where(eq(users.id, id));
     return result.rowCount ?? 0;
   }
 
-  static async updatePassword(id: bigint, newPassword: string): Promise<number> {
+  static async updatePassword(id: number, newPassword: string): Promise<number> {
     const result = await db.update(users).set({ password: newPassword }).where(eq(users.id, id));
     return result.rowCount ?? 0;
   }
 
-  static async getById(id: bigint): Promise<User | undefined> {
+  static async getById(id: number): Promise<User | undefined> {
     const [user] = await db
       .select()
       .from(users)

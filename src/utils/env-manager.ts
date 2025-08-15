@@ -33,4 +33,17 @@ export class EnvManager {
     return parseInt(val, 10);
   }
 
+  static getJWTSecret(): string {
+    const val = this.getVar("JWT_SECRET", true);
+    if (!val) {
+      throw new Error("Missing required environment variable: JWT_SECRET");
+    }
+    return val;
+  }
+  
+  static getJWTExpired(): string {
+    const val: string = this.getVar("JWT_EXPIRED", false) ?? "1h";
+    return val;
+  }
+  
 }

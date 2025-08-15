@@ -1,5 +1,5 @@
 import { db } from "../db"; // Your Drizzle DB instance
-import { mylists } from "../schema/mylists";
+import { mylists } from "../schema";
 import { and, eq } from "drizzle-orm";
 import { InferSelectModel, InferInsertModel } from "drizzle-orm";
 
@@ -16,7 +16,7 @@ export class MyListModel {
     return inserted;
   }
 
-  static async deleteById(listId: bigint, userId: bigint): Promise<number> {
+  static async deleteById(listId: number, userId: number): Promise<number> {
     const result = await db
       .delete(mylists)
       .where(and(eq(mylists.id, listId), eq(mylists.userId, userId)));
@@ -24,8 +24,8 @@ export class MyListModel {
   }
 
   static async updateById(
-    listId: bigint,
-    userId: bigint,
+    listId: number,
+    userId: number,
     updates: Partial<Pick<MyList, "title" | "image" | "episode">>
   ): Promise<number> {
     const result = await db
@@ -35,7 +35,7 @@ export class MyListModel {
     return result.rowCount ?? 0;
   }
 
-  static async getById(listId: bigint, userId: bigint): Promise<MyList | undefined> {
+  static async getById(listId: number, userId: number): Promise<MyList | undefined> {
     const [list] = await db
       .select()
       .from(mylists)
@@ -43,7 +43,7 @@ export class MyListModel {
     return list;
   }
 
-  static async getByUserId(userId: bigint): Promise<MyList[]> {
+  static async getByUserId(userId: number): Promise<MyList[]> {
     return db
       .select()
       .from(mylists)

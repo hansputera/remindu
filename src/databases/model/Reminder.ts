@@ -1,6 +1,5 @@
 import { db } from "../db";
-import { reminders } from "../schema/reminders";
-import { mylists } from "../schema/mylists";
+import { reminders, mylists } from "../schema";
 import { eq, and } from "drizzle-orm";
 import { InferSelectModel, InferInsertModel } from "drizzle-orm";
 
@@ -10,25 +9,25 @@ export type NewReminder = InferInsertModel<typeof reminders>;
 export class ReminderModel {
 
   static async create(data: NewReminder): Promise<Reminder> {
-  // check ownership
-  const [list] = await db
-    .select()
-    .from(mylists)
-    .where(and(eq(mylists.id, data.listId), eq(mylists.userId, data.userId)));
+    // check ownership
+    const [list] = await db
+      .select()
+      .from(mylists)
+      .where(and(eq(mylists.id, data.listId), eq(mylists.userId, data.userId)));
 
-  if (!list) {
-    throw new Error("List not found or does not belong to user");
+    if (!list) {
+      throw new Error("List not found or does not belong to user");
+    }
+
+    const [inserted] = await db
+      .insert(reminders)
+      .values(data)
+      .returning();
+
+    return inserted;
   }
 
-  const [inserted] = await db
-    .insert(reminders)
-    .values(data)
-    .returning();
-
-  return inserted;
-}
-
-  static async deleteById(reminderId: bigint, userId: bigint): Promise<number> {
+  static async deleteById(reminderId: number, userId: number): Promise<number> {
     const result = await db
       .delete(reminders)
       .where(
@@ -42,8 +41,8 @@ export class ReminderModel {
   }
 
   static async updateById(
-    reminderId: bigint,
-    userId: bigint,
+    reminderId: number,
+    userId: number,
     updates: Partial<Pick<Reminder, "waitingType" | "onEpisode" | "onDate">>
   ): Promise<number> {
     const result = await db
@@ -59,7 +58,7 @@ export class ReminderModel {
     return result.rowCount ?? 0;
   }
 
-  static async getById(reminderId: bigint): Promise<Reminder | undefined> {
+  static async getById(reminderId: number): Promise<Reminder | undefined> {
     const [reminder] = await db
       .select()
       .from(reminders)
@@ -68,7 +67,7 @@ export class ReminderModel {
     return reminder;
   }
 
-  static async getByListId(listId: bigint): Promise<Reminder[]> {
+  static async getByListId(listId: number): Promise<Reminder[]> {
     return db
       .select()
       .from(reminders)
