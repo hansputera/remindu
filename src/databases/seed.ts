@@ -12,7 +12,7 @@ const main = async () => {
   
   console.log("Seed start");
   
-  const password = await Bun.password.hash("12345", {
+  const password = await Bun.password.hash("12345678", {
     algorithm: "bcrypt",
     cost: 10
   });
@@ -23,7 +23,7 @@ const main = async () => {
       email: faker.internet.email(),
       fullName: faker.person.fullName(),
       password,
-      phone: faker.phone.number(),
+      phone: faker.phone.number({ style: 'international'}),
     });
     
     if (i === 0) {

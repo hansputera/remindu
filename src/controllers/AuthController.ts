@@ -58,15 +58,11 @@ const AuthController = new Elysia({ prefix: '/auth' })
       error({ code, error }) {
         switch (code) {
           case 'VALIDATION':
-            console.log(error.all);
-            
             const fields = [
               { path: '/email', field: 'email', message: 'Invalid email.' },
               { path: '/email', field: 'email', message: 'Email is required.' },
               { path: '/password', field: 'password', message: 'Password is required.' },
-              
-              // TODO: activate this later
-              // { path: '/password', field: 'password', message: 'Password must be at least 8 characters long.' }
+              { path: '/password', field: 'password', message: 'Password must be at least 8 characters long.' }
             ];
 
             const [errors] = fields
@@ -225,8 +221,8 @@ const AuthController = new Elysia({ prefix: '/auth' })
         switch (code) {
           case 'VALIDATION':
             const fields = [
-              { path: '/email', field: 'email', message: 'Invalid email.' },
               { path: '/email', field: 'email', message: 'Email is required.' },
+              { path: '/email', field: 'email', message: 'Invalid email.' },
               { path: '/password', field: 'password', message: 'Password is required.' },
               { path: '/password', field: 'password', message: 'Password must be at least 8 characters long.' },
               { path: '/phone', field: 'phone', message: 'Phone is required.' },
