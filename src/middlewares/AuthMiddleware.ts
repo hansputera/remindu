@@ -29,7 +29,7 @@ export const AuthMiddleware = (app: Elysia) => {
 
         // TODO: secure this logic with encryption or else
         const id = jwtPayload.id;
-        const user = UserModel.getById(id as number);
+        const user = await UserModel.getById(id as number);
 
         if (!user) {
           set.status = 401;
@@ -39,7 +39,9 @@ export const AuthMiddleware = (app: Elysia) => {
         }
 
         return {
-          authorized: true
+          authorized: true,
+          user,
+          userId: id
         }
     });
 };

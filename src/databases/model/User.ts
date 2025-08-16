@@ -21,6 +21,16 @@ export class UserModel {
     const result = await db.update(users).set({ password: newPassword }).where(eq(users.id, id));
     return result.rowCount ?? 0;
   }
+  
+  static async updateEmail(id: number, email: string): Promise<number> {
+    const result = await db.update(users).set({ email }).where(eq(users.id, id));
+    return result.rowCount ?? 0;
+  }
+  
+  static async updateNameAndPhone(id: number, name: string, phone: string): Promise<number> {
+    const result = await db.update(users).set({ fullName: name, phone }).where(eq(users.id, id));
+    return result.rowCount ?? 0;
+  }
 
   static async getById(id: number): Promise<User | undefined> {
     const [user] = await db

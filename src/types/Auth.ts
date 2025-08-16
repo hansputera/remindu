@@ -6,7 +6,6 @@ export const LoginBodyRequest = t.Object({
     format: 'email',
   }),
   password: t.String({
-    format: 'password',
     minLength: 8
   }),
 });
