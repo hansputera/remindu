@@ -3,6 +3,7 @@ import { Elysia } from "elysia";
 import { EnvManager } from './utils/EnvManager';
 import AuthController from './controllers/AuthController';
 import UserController from './controllers/UserController';
+import MylistController from './controllers/MylistController';
 
 const port: number = EnvManager.getPort();
 const app = new Elysia()
@@ -42,6 +43,7 @@ const app = new Elysia()
     app
       .use(AuthController)
       .use(UserController)
+      .use(MylistController)
   )
   .listen(port);
 

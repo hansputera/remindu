@@ -10,11 +10,11 @@ npm install
 npm run db:migrate
 ```
 3. reset migration
-  - remove all drizzle schema manually
-  - delete all table from public schema manually
-  - back to step 2
-  - running seeder
+  - create new schema / update schema
 ```bash
+npm run db:generate
+npm run db:migrate
+npm run db:push
 npm run db:seed
 ```
 

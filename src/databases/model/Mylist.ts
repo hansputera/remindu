@@ -5,6 +5,18 @@ import { InferSelectModel, InferInsertModel } from "drizzle-orm";
 
 export type MyList = InferSelectModel<typeof mylists>;
 export type NewMyList = InferInsertModel<typeof mylists>;
+type MylistPartialUpdate = Partial<
+  Pick<
+    MyList, 
+    "title" | 
+    "image" | 
+    "episode" | 
+    "status" | 
+    "waitingType" | 
+    "onEpisode" | 
+    "onDate"
+  >
+>;
 
 export class MyListModel {
 
@@ -26,7 +38,7 @@ export class MyListModel {
   static async updateById(
     listId: number,
     userId: number,
-    updates: Partial<Pick<MyList, "title" | "image" | "episode">>
+    updates: MylistPartialUpdate
   ): Promise<number> {
     const result = await db
       .update(mylists)
