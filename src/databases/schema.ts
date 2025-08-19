@@ -22,6 +22,7 @@ export const mylists = pgTable('mylists', {
   userId: integer("user_id").references(() => users.id).notNull(),
   status: varchar("status", { length: 20, enum: ['active', 'inactive'] }).notNull().default('active'),
   
+  reminder: varchar("reminder", { length: 5, enum: ['on', 'off'] }).notNull().default('off'),
   waitingType: varchar("waiting_type", { length: 20, enum: ['disabled', 'episode', 'date'] }).notNull().default('disabled'),
   onEpisode: integer(),
   onDate: date('on_date', { mode: 'date' }),

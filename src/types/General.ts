@@ -6,6 +6,16 @@ export enum WaitingTypeEnum {
   DATE = "date"
 }
 
+export enum StatusEnum {
+  ACTIVE = "active",
+  INACTIVE = "inactive",
+}
+
+export enum ReminderEnum {
+  ON = "on",
+  OFF = "off",
+}
+
 export const GeneralResponse = t.Object({
   status: t.String(),
   message: t.String(),

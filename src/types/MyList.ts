@@ -8,6 +8,7 @@ export type MyListTable = typeof Table
 
 const _selectReminder = createSelectSchema(Table.mylists);
 const _updateReminder = createUpdateSchema(Table.mylists, {
+  reminder: t.UnionEnum(["on", "off"]),
   waitingType: t.UnionEnum(["episode", "date"]),
   onDate: t.Optional(t.String({ format: 'date' }))
 });
@@ -17,7 +18,7 @@ export const MyListStatusRequest = t.Object({
 });
 
 export const MyListReminderBodyRequest = t.Pick(
-  _updateReminder, ["waitingType", "onEpisode", "onDate"]
+  _updateReminder, ["waitingType", "onEpisode", "onDate", "reminder"]
 );
 
 export const MyListResponse = t.Object({
@@ -33,7 +34,13 @@ export const MyListAllResponse = t.Object({
 })
 
 export type ReminderBody = {
+  reminder: "on" | "off";
   waitingType: "episode" | "date";
   onEpisode: number | null;
   onDate: Date | null;
+}
+
+export type UpdateStatusBody = {
+  status: "active" | "inactive";
+  reminder?: "on" | "off";
 }

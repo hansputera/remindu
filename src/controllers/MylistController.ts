@@ -1,8 +1,8 @@
 import { Elysia, t } from 'elysia';
 import { AuthMiddleware } from '../middlewares/AuthMiddleware';
-import { GeneralResponse, ParamId, WaitingTypeEnum } from '../types/General';
+import { GeneralResponse, ParamId, ReminderEnum, StatusEnum, WaitingTypeEnum } from '../types/General';
 import { MyListModel } from '../databases/model/Mylist';
-import { MyListAllResponse, MyListReminderBodyRequest, MyListResponse, MyListStatusRequest, ReminderBody } from '../types/MyList';
+import { MyListAllResponse, MyListReminderBodyRequest, MyListResponse, MyListStatusRequest, ReminderBody, UpdateStatusBody } from '../types/MyList';
 
 const MylistController = new Elysia()
     .group('/mylist', (app) => app
@@ -16,7 +16,7 @@ const MylistController = new Elysia()
           }
         }
       })
-      .get('/', async ({ userId }) => {
+      .get('/all', async ({ userId }) => {
         const lists = await MyListModel.getByUserId(userId as number);
         const transformList = [];
         for (const list of lists) {
@@ -29,6 +29,7 @@ const MylistController = new Elysia()
             waitingType: list.waitingType,
             onEpisode: list.onEpisode,
             onDate: list.onDate,
+            reminder: list.reminder,
             createdAt: list.createdAt,
             updatedAt: list.updatedAt,
           });
@@ -98,6 +99,12 @@ const MylistController = new Elysia()
                               enum: ["active", "inactive"],
                               description: "List status.",
                               example: "active"
+                            },
+                            reminder: {
+                              type: "string",
+                              enum: ["on", "off"],
+                              description: "reminder for waiting.",
+                              example: "off"
                             },
                             waitingType: {
                               type: "string",
@@ -230,6 +237,12 @@ const MylistController = new Elysia()
                             description: "List status.",
                             example: "active"
                           },
+                          reminder: {
+                            type: "string",
+                            enum: ["on", "off"],
+                            description: "reminder for waiting.",
+                            example: "off"
+                          },
                           waitingType: {
                             type: "string",
                             enum: ["date", "episode", "disabled"],
@@ -273,8 +286,20 @@ const MylistController = new Elysia()
       .put('/status/:id', async ({ params, body, userId, set }) => {
         const { id } = params;
         const { status } = body;
+        let updateData: UpdateStatusBody = {
+          status
+        };
         
-        const result = await MyListModel.updateById(id, userId as number, { status });
+        /**
+         * Notes: 
+         * when status change to "inactive" set reminder to "off"
+         * prevent notification when the list inactive
+         */
+        if (status === StatusEnum.INACTIVE) {
+          updateData.reminder = ReminderEnum.OFF;
+        }
+        
+        const result = await MyListModel.updateById(id, userId as number, updateData);
         if (result < 1) {
           set.status = 422;
           return {
@@ -414,8 +439,9 @@ const MylistController = new Elysia()
       })
       .put('/reminder/:id', async ({ params, body, userId, set }) => {
         const { id } = params;
-        const { waitingType, onEpisode, onDate } = body;
-        let updateData: ReminderBody = { 
+        const { reminder, waitingType, onEpisode, onDate } = body;
+        let updateData: ReminderBody = {
+          reminder,
           waitingType,
           onEpisode: null,
           onDate: null,
