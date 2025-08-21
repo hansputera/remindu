@@ -8,6 +8,20 @@
       "when": 1755230167251,
       "tag": "0000_numerous_morbius",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1755590622550,
+      "tag": "0001_first_red_shift",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1755598049529,
+      "tag": "0002_reflective_pandemic",
+      "breakpoints": true
     }
   ]
 }

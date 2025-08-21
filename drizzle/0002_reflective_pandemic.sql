@@ -1,0 +1,1 @@
+ALTER TABLE "mylists" ADD COLUMN "reminder" varchar(5) DEFAULT 'off' NOT NULL;

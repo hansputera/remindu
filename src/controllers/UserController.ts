@@ -23,7 +23,6 @@ const UserController = new Elysia()
           status: 'success',
           message: "Successfully retrieved user.",
           data: {
-            id: userData.id,
             fullName: userData.fullName,
             phone: userData.phone,
             email: userData.email

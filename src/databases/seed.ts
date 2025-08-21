@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { UserModel } from './model/User';
 import { MyListModel } from './model/Mylist';
-import { ReminderModel } from './model/Reminder';
+// import { ReminderModel } from './model/Reminder';
 import { db } from './db';
 import { reset } from 'drizzle-seed';
 import * as schema from "./schema";
@@ -19,8 +19,14 @@ const main = async () => {
   
   for (let i = 0; i < 2; i++) {
     console.log(`Seed user ${i + 1}`);
+    
+    let email = faker.internet.email();
+    if (i == 0) {
+      email = 'wanz@gmail.com';
+    }
+    
     const makeUser = await UserModel.create({
-      email: faker.internet.email(),
+      email,
       fullName: faker.person.fullName(),
       password,
       phone: faker.phone.number({ style: 'international'}),
@@ -33,32 +39,37 @@ const main = async () => {
         title: "One Piece",
         userId: makeUser.id,
         episode: 100,
-        image: "https://elexmedia.s3.amazonaws.com/product/9789792041224.jpg"
+        image: "https://elexmedia.s3.amazonaws.com/product/9789792041224.jpg",
+        waitingType: "episode",
+        onEpisode: 110,
+        status: "active"
       });
       
       const makeSecondList = await MyListModel.create({
         title: "Solo Leveling",
         userId: makeUser.id,
         episode: 5,
-        image: "https://play.google.com/books/publisher/content/images/frontcover/IF0QEAAAQBAJ?fife=w240-h345"
-      });
-      
-      console.log(`Seed reminder`);
-      await ReminderModel.create({
-        userId: makeUser.id,
-        listId: makeFirstList.id,
-        waitingType: "episode",
-        onEpisode: 110
-      });
-      
-      await ReminderModel.create({
-        userId: makeUser.id,
-        listId: makeSecondList.id,
+        image: "https://play.google.com/books/publisher/content/images/frontcover/IF0QEAAAQBAJ?fife=w240-h345",
         waitingType: "date",
-        onDate: new Date("2025-08-22")
+        onDate: new Date("2025-08-25"),
+        status: "active"
       });
+      
+      // console.log(`Seed reminder`);
+      // await ReminderModel.create({
+      //   userId: makeUser.id,
+      //   listId: makeFirstList.id,
+      //   waitingType: "episode",
+      //   onEpisode: 110
+      // });
+      
+      // await ReminderModel.create({
+      //   userId: makeUser.id,
+      //   listId: makeSecondList.id,
+      //   waitingType: "date",
+      //   onDate: new Date("2025-08-22")
+      // });
     }
-
   }
 
   console.log("Seed done");
